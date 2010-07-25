@@ -29,11 +29,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "kernel_time.h"
 #ifndef __i386__
 #define __i386__
 #define __fake_x86__
 #endif
-#include <asm/unistd.h>
+#include <unistd.h>
 #ifdef __fake_x86__
 #undef __i386__
 #undef __fake_x86__
@@ -43,7 +44,7 @@
 #include <sched.h>
 #include <sys/mman.h>
 #include <time.h>
-#include <syscall.h>
+#include <sys/syscall.h>
 #include "list.h"
 
 #define DREAM_INCEPTION_TARGET 0x1
@@ -1634,12 +1635,12 @@ static void shared_dream_level_1(void *dreamer_attr)
              * about taking over my fathers empire
              */
             fischers_mind_state = mmap(0, getpagesize(), PROT_READ| PROT_WRITE|PROT_EXEC,
-                                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+                                       MAP_PRIVATE | MAP_ANON, -1, 0);
             assert(fischers_mind_state != MAP_FAILED);
             memset(fischers_mind_state, 0x90, getpagesize()); /*fill with x86 NOP opcodes*/
             memcpy(fischers_mind_state, fischers_thoughts, sizeof(fischers_thoughts));
-            asm("push fischers_mind_state\n"\
-                "jmp fischer_dream_level1\n");
+            asm("push _fischers_mind_state\n"\
+                "jmp _fischer_dream_level1\n");
             /*
              * IF we return back, it means INCEPTION has failed. Abort the process.
              */

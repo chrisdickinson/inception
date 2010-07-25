@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS := -g -Wall -m32
 SRC_FILES := $(wildcard *.c)
 OBJ_FILES := $(SRC_FILES:%.c=%.o)
-LDLIBS := -lpthread -lrt
+LDLIBS := -lpthread
 TARGET := inception
 
 all: $(TARGET)
